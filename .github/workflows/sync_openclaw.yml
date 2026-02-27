@@ -1,0 +1,36 @@
+name: Sync Fork from openclaw/openclaw (main)
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # 每 6 小时自动运行一次
+  workflow_dispatch:        # 允许你在 Actions 页手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    # 允许 GITHUB_TOKEN 对当前仓库具有写权限，才能 push
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout your fork
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Add upstream and fetch
+        run: |
+          # 如果之前已添加过 upstream，这里忽略错误即可
+          git remote add upstream https://github.com/openclaw/openclaw.git 2>/dev/null || true
+          git fetch upstream
+
+      - name: Merge upstream/main into your main
+        run: |
+          git checkout main
+          # 进行合并；若没有变更会直接成功；若有冲突，此步会失败（正常）
+          git merge upstream/main --no-edit || true
+
+      - name: Push updates back to your fork
+        run: git push origin main
