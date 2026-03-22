@@ -273,7 +273,7 @@ describe("gateway talk.config", () => {
       }
       return new Response(new Uint8Array([1, 2, 3]), { status: 200 });
     });
-    globalThis.fetch = fetchMock as typeof fetch;
+    globalThis.fetch = fetchMock as unknown as typeof fetch;
 
     try {
       await withServer(async (ws) => {
@@ -327,7 +327,7 @@ describe("gateway talk.config", () => {
       fetchUrl = typeof input === "string" ? input : input instanceof URL ? input.href : input.url;
       return new Response(new Uint8Array([4, 5, 6]), { status: 200 });
     });
-    globalThis.fetch = fetchMock as typeof fetch;
+    globalThis.fetch = fetchMock as unknown as typeof fetch;
 
     try {
       await withServer(async (ws) => {

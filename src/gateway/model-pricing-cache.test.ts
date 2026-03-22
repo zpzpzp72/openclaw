@@ -108,7 +108,7 @@ describe("model-pricing-cache", () => {
       },
     } as unknown as OpenClawConfig;
 
-    const fetchImpl: typeof fetch = async () =>
+    const fetchImpl = (async () =>
       new Response(
         JSON.stringify({
           data: [
@@ -149,7 +149,7 @@ describe("model-pricing-cache", () => {
           status: 200,
           headers: { "Content-Type": "application/json" },
         },
-      );
+      )) as unknown as typeof fetch;
 
     await refreshGatewayModelPricingCache({ config, fetchImpl });
 

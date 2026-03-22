@@ -33,7 +33,7 @@ describe("refreshQwenPortalCredentials", () => {
           headers: { "Content-Type": "application/json" },
         },
       );
-    }) as typeof fetch;
+    }) as unknown as typeof fetch;
 
     const result = await runRefresh();
 
@@ -63,7 +63,7 @@ describe("refreshQwenPortalCredentials", () => {
           headers: { "Content-Type": "application/json" },
         },
       );
-    }) as typeof fetch;
+    }) as unknown as typeof fetch;
 
     const result = await runRefresh();
 
@@ -82,7 +82,7 @@ describe("refreshQwenPortalCredentials", () => {
           headers: { "Content-Type": "application/json" },
         },
       );
-    }) as typeof fetch;
+    }) as unknown as typeof fetch;
 
     await expect(runRefresh()).rejects.toThrow(
       "Qwen OAuth refresh response missing or invalid expires_in",
@@ -92,7 +92,7 @@ describe("refreshQwenPortalCredentials", () => {
   it("turns 400 responses into a re-authenticate hint", async () => {
     globalThis.fetch = vi.fn(
       async () => new Response("bad refresh", { status: 400 }),
-    ) as typeof fetch;
+    ) as unknown as typeof fetch;
 
     await expect(runRefresh()).rejects.toThrow("Qwen OAuth refresh token expired or invalid");
   });
@@ -120,7 +120,7 @@ describe("refreshQwenPortalCredentials", () => {
           headers: { "Content-Type": "application/json" },
         },
       );
-    }) as typeof fetch;
+    }) as unknown as typeof fetch;
 
     await expect(runRefresh()).rejects.toThrow("Qwen OAuth refresh response missing access token");
   });
@@ -128,7 +128,7 @@ describe("refreshQwenPortalCredentials", () => {
   it("surfaces non-400 refresh failures", async () => {
     globalThis.fetch = vi.fn(
       async () => new Response("gateway down", { status: 502 }),
-    ) as typeof fetch;
+    ) as unknown as typeof fetch;
 
     await expect(runRefresh()).rejects.toThrow("Qwen OAuth refresh failed: gateway down");
   });

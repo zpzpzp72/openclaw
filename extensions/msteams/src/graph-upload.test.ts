@@ -107,7 +107,7 @@ describe("resolveGraphChatId", () => {
   };
 
   it("returns the ID directly when it already starts with 19:", async () => {
-    const fetchFn = vi.fn();
+    const fetchFn = vi.fn() as unknown as typeof fetch;
     const result = await resolveGraphChatId({
       botFrameworkConversationId: "19:abc123@thread.tacv2",
       tokenProvider,
@@ -131,7 +131,7 @@ describe("resolveGraphChatId", () => {
       botFrameworkConversationId: "a:1abc_bot_framework_dm_id",
       userAadObjectId: "user-aad-object-id-123",
       tokenProvider,
-      fetchFn,
+      fetchFn: fetchFn as unknown as typeof fetch,
     });
 
     expect(fetchFn).toHaveBeenCalledWith(
@@ -158,7 +158,7 @@ describe("resolveGraphChatId", () => {
     const result = await resolveGraphChatId({
       botFrameworkConversationId: "8:orgid:user-object-id",
       tokenProvider,
-      fetchFn,
+      fetchFn: fetchFn as unknown as typeof fetch,
     });
 
     expect(fetchFn).toHaveBeenCalledOnce();
@@ -178,7 +178,7 @@ describe("resolveGraphChatId", () => {
       botFrameworkConversationId: "a:1unknown_dm",
       userAadObjectId: "some-user",
       tokenProvider,
-      fetchFn,
+      fetchFn: fetchFn as unknown as typeof fetch,
     });
 
     expect(result).toBeNull();
@@ -197,7 +197,7 @@ describe("resolveGraphChatId", () => {
       botFrameworkConversationId: "a:1some_dm_id",
       userAadObjectId: "some-user",
       tokenProvider,
-      fetchFn,
+      fetchFn: fetchFn as unknown as typeof fetch,
     });
 
     expect(result).toBeNull();
